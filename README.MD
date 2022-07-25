@@ -1,10 +1,14 @@
-# object-compare
+# compare-an-object
 
 This is a function that can compare two arrays or objects. Pass in an object in any order or array and will return true or false.
 (This function is in beta and needs feedback) Please email johneatman446@gmail.com if something wrong with it. Thanks!
 
+```
+npm i compare-an-object
+```
+
 ```js
-var compare = require("object-compare");
+var compare = require("compare-an-object");
 var a = {
   a: 3,
   zzz: 4,
