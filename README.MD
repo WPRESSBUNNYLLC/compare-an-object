@@ -1,6 +1,6 @@
 # compare-an-object
 
-This is a function that can compare two objects to their deepest level in any order (arrays or objects only). Does not suupport WeakSet and WeakMap (will throw an error). Converts map and set to object (make sure format of map and set is correct "new Set([]) new Map([])"). See example for test.
+This is a function that can compare two objects to their deepest level in any order (arrays or objects only) (no prototype). Does not support WeakSet and WeakMap (will throw an error). Converts map and set to object (make sure format of map and set is correct "new Set([]) new Map([])"). See example for test.
 
 ```
 npm i compare-an-object
