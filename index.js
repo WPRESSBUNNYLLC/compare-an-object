@@ -1,13 +1,10 @@
 /*
  turning deep objects into arrays and comparing.
  recursing on objects and arrays
- pushing key, type and value
- will use lib function if i find an error...
- for should_pop, im
- making sure I am in an object AND at the end of an object OR 
- in an object and at the end of an array 
- THEN popping so the last reference points to the correct value
- so I can compare in n^2
+ pushing path, key, type and value
+ for should_pop, making sure I am in an object when popping so I can compare in n^2
+ feedback email: johneatman446@gmail.com
+ please send an email if wrong
 */ 
 
 var components = [];
@@ -136,7 +133,7 @@ function deep_check_array(key, arr, should_pop) {
    typeof(arr[i]) === 'object' && 
    Array.isArray(arr[i]) === true
   ) {
-   components.push(`{ path: "[${key_set}]", key: "(${key})", type: "array", value: "${arr[i]}" }`);
+   components.push(`{ path: "[${key_set}]", key: "${key}", type: "array", value: "${arr[i]}" }`);
    deep_check_array(key, arr[i], false);
   }
 
