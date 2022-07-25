@@ -48,6 +48,27 @@ function compare(av, rv) {
 
  }
 
+ if(
+  `${av}` === "[object WeakMap]" || 
+  `${av}` === "[object WeakSet]" ||
+  `${rv}` === "[object WeakMap]" ||
+  `${rv}` === "[object WeakSet]"
+  ) { 
+    return false;
+  }
+
+ if(`${av}` === "[object Map]") { 
+  av = Object.fromEntries(av);
+ } else if(`${av}` === "[object Set]") { 
+  av = Object.assign({}, ...Array.from(av, value => ({ [value]: 'not assigned' })));
+ }
+
+ if(`${rv}` === "[object Map]") { 
+  rv = Object.fromEntries(rv);
+ } else if(`${rv}` === "[object Set]") { 
+  rv = Object.assign({}, ...Array.from(rv, value => ({ [value]: 'not assigned' })));
+ }
+
  var avkeys = Object.keys(av);
  var rvkeys = Object.keys(rv);
 
@@ -80,7 +101,22 @@ function compare(av, rv) {
 }
 
 function deep_check_object(obj, keys, should_pop) { 
- 
+
+ if(
+  `${obj}` === "[object WeakMap]" || 
+  `${obj}` === "[object WeakSet]"
+ ) { 
+   throw new Error('object must not contain weakmap or weakset');
+ }
+
+ if(`${obj}` === "[object Map]") { 
+  obj = Object.fromEntries(obj);
+  keys = Object.keys(obj);
+ } else if(`${obj}` === "[object Set]") { 
+  obj = Object.assign({}, ...Array.from(obj, value => ({ [value]: 'not assigned' })));
+  keys = Object.keys(obj);
+ }
+
  keys.forEach((key, index) => {
 
   if(

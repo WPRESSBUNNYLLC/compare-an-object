@@ -1,7 +1,6 @@
 # compare-an-object
 
-This is a function that can compare two arrays or objects. Pass in an object in any order or array and will return true or false.
-(This function is in beta and needs feedback) Please email johneatman446@gmail.com if something wrong with it. Thanks!
+This is a function that can compare two arrays or objects. Pass in an object in any order or array and will return true or false. Does not suupport WeakSet and WeakMap (will throw an error). Converts map and set to object. See example for test.
 
 ```
 npm i compare-an-object
