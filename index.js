@@ -3,7 +3,7 @@
  recursing on objects and arrays
  pushing path, key, type and value
  for should_pop, making sure I am in an object when popping so I can compare in n^2
- feedback email: johneatman446@gmail.com
+ feedback: johneatman446@gmail.com
  please send an email if anything wrong/missing
 */ 
 
@@ -11,6 +11,9 @@ var components = [];
 var key_set = [];
 
 function compare(av, rv) { 
+
+  components = [];
+  key_set = [];
 
  if(
   typeof(av) !== 'object' || 
