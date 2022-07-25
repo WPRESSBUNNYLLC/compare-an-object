@@ -91,7 +91,7 @@ function deep_check_object(obj, keys, should_pop) {
    Array.isArray(obj[key]) === false && 
    obj[key] !== null
   ) {
-   `${key}` === "[object Object]" ? key_set.push(`(${key},object)`) : '';
+   `${obj[key]}` === "[object Object]" ? key_set.push(`(${key},object)`) : '';
    components.push(`{ path: "[${key_set}]", key: "${key}", type: "${typeof(obj[key])}", value: "${obj[key]}" }`);
    deep_check_object(obj[key], Object.keys(obj[key]), true);
   }
