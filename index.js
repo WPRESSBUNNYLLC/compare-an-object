@@ -4,7 +4,7 @@
  pushing path, key, type and value
  for should_pop, making sure I am in an object when popping so I can compare in n^2
  feedback email: johneatman446@gmail.com
- please send an email if wrong
+ please send an email if anything wrong/missing
 */ 
 
 var components = [];
@@ -126,22 +126,51 @@ function deep_check_object(obj, keys, should_pop) {
    Array.isArray(obj[key]) === false && 
    obj[key] !== null
   ) {
-   `${obj[key]}` === "[object Object]" ? key_set.push(`(${key},object)`) : '';
-   components.push(`{ path: "[${key_set}]", key: "${key}", type: "${typeof(obj[key])}", value: "${obj[key]}" }`);
-   deep_check_object(obj[key], Object.keys(obj[key]), `${obj[key]}` === "[object Object]" ? true : false);
-  }
 
-  else if(
+   `${obj[key]}` === "[object Object]" ? key_set.push(`(${key},object)`) : '';
+
+   components.push(format_string(
+    key_set, 
+    key, 
+    typeof(obj[key]),
+    obj[key]
+   ));
+
+   deep_check_object(
+    obj[key], 
+    Object.keys(obj[key]), 
+    `${obj[key]}` === "[object Object]" ? true : false
+   );
+
+  } else if(
    typeof(obj[key]) === 'object' && 
    Array.isArray(obj[key]) === true
   ) {
-   key_set.push(`(${key},array)`);
-   components.push(`{ path: "[${key_set}]", key: "${key}", type: "array", value: "${obj[key]}" }`);
-   deep_check_array(key, obj[key], true);
-  }
 
-  else { 
-   components.push(`{ path: "[${key_set}]", key: "${key}", type: "${typeof(obj[key])}", value: "${typeof(obj[key]) === 'function' ? `${obj[key]}`.replace(/\s+/g, '').toLowerCase() : `${obj[key]}`}" }`);
+   key_set.push(`(${key},array)`);
+
+   components.push(format_string(
+    key_set, 
+    key, 
+    'array', 
+    obj[key]
+   ));
+
+   deep_check_array(
+    key, 
+    obj[key], 
+    true
+   );
+
+  } else { 
+
+   components.push(format_string(
+    key_set, 
+    key, 
+    typeof(obj[key]), 
+    typeof(obj[key]) === 'function' ? `${obj[key]}`.replace(/\s+/g, '').toLowerCase() : obj[key]
+   ));
+
   }
 
  });
@@ -163,20 +192,47 @@ function deep_check_array(key, arr, should_pop) {
    Array.isArray(arr[i]) === false && 
    arr[i] !== null
   ) { 
-   components.push(`{ path: "[${key_set}]", key: "${key}", type: "${typeof(arr[i])}", value: "${arr[i]}" }`);
-   deep_check_object(arr[i], Object.keys(arr[i]), false);
-  }
 
-  else if(
+   components.push(format_string(
+    key_set, 
+    key, 
+    typeof(arr[i]), 
+    arr[i]
+   ));
+
+   deep_check_object(
+    arr[i], 
+    Object.keys(arr[i]), 
+    false
+   );
+
+  } else if(
    typeof(arr[i]) === 'object' && 
    Array.isArray(arr[i]) === true
   ) {
-   components.push(`{ path: "[${key_set}]", key: "${key}", type: "array", value: "${arr[i]}" }`);
-   deep_check_array(key, arr[i], false);
-  }
 
-  else { 
-   components.push(`{ path: "[${key_set}]", key: "${key}", type: "${typeof(arr[i])}", value: "${typeof(arr[i]) === 'function' ? `${arr[i]}`.replace(/\s+/g, '').toLowerCase() : `${arr[i]}`}" }`);
+  components.push(format_string( 
+   key_set, 
+   key, 
+   'array', 
+   arr[i]
+  ));
+
+  deep_check_array(
+   key, 
+   arr[i], 
+   false
+  );
+
+  } else { 
+
+   components.push(format_string( 
+    key_set, 
+    key, 
+    typeof(arr[i]), 
+    typeof(arr[i]) === 'function' ? `${arr[i]}`.replace(/\s+/g, '').toLowerCase() : arr[i]
+   ));
+
   }
 
  }
@@ -186,5 +242,9 @@ function deep_check_array(key, arr, should_pop) {
  }
 
 } 
+
+function format_string(key_set, key, type, value) { 
+  return `{ path: "[${key_set}]", key: "${key}", type: "${type}", value: "${value}" }`;
+}
 
 module.exports = compare;
