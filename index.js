@@ -93,7 +93,7 @@ function deep_check_object(obj, keys, should_pop) {
   ) {
    `${obj[key]}` === "[object Object]" ? key_set.push(`(${key},object)`) : '';
    components.push(`{ path: "[${key_set}]", key: "${key}", type: "${typeof(obj[key])}", value: "${obj[key]}" }`);
-   deep_check_object(obj[key], Object.keys(obj[key]), true);
+   deep_check_object(obj[key], Object.keys(obj[key]), `${obj[key]}` === "[object Object]" ? true : false);
   }
 
   else if(
