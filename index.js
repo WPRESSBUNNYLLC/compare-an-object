@@ -57,7 +57,7 @@ function compare(av, rv) {
   `${rv}` === "[object WeakMap]" ||
   `${rv}` === "[object WeakSet]"
   ) { 
-    throw new Error('object must not contain weakmap or weakset');
+    throw new Error('input must not be weakmap or weakset');
   }
 
  if(

@@ -1,6 +1,6 @@
 # compare-an-object
 
-This is a function that can compare two arrays or objects at their deepest level in any order. (Does not support WeakSet and WeakMap)
+This is a function that can compare two arrays or objects in any order at their deepest level with 100% accuracy.
 
 ```
 npm i compare-an-object
@@ -122,6 +122,8 @@ var b = {
   },
 };
 
-var result = compare(a, b); //maps must be formatted correctly or else error will be thrown
+var result = compare(a, b); //make sure all values are formatted correctly
 console.log(result); //returns true
 ```
+
+(Does not support WeakSet and WeakMap)
