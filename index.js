@@ -12,8 +12,8 @@ var key_set = [];
 
 function compare(av, rv) { 
 
-  components = [];
-  key_set = [];
+ components = [];
+ key_set = [];
 
  if(
   typeof(av) !== 'object' || 
@@ -27,6 +27,31 @@ function compare(av, rv) {
   rv === null
  ) { 
   return false;
+ }
+
+ if(
+  `${av}` === "[object WeakMap]" || 
+  `${av}` === "[object WeakSet]" ||
+  `${rv}` === "[object WeakMap]" ||
+  `${rv}` === "[object WeakSet]"
+ ) { 
+  throw new Error('input must not be weakmap or weakset');
+ }
+
+ if(`${av}` === "[object Map]") { 
+  av = Object.fromEntries(av);
+ }
+
+ if(`${av}` === "[object Set]") { 
+  av = Array.from(av);
+ }
+
+ if(`${rv}` === "[object Map]") { 
+  rv = Object.fromEntries(rv);
+ }
+
+ if(`${rv}` === "[object Set]") { 
+  rv = Array.from(rv);
  }
 
  if(
@@ -50,29 +75,6 @@ function compare(av, rv) {
   }
 
  }
-
- if(
-  `${av}` === "[object WeakMap]" || 
-  `${av}` === "[object WeakSet]" ||
-  `${rv}` === "[object WeakMap]" ||
-  `${rv}` === "[object WeakSet]"
-  ) { 
-    throw new Error('input must not be weakmap or weakset');
-  }
-
- if(
-  `${av}` === "[object Map]" || 
-  `${av}` === "[object Set]"
-  ) { 
-   av = Object.fromEntries(av);
-  }
-
- if(
-  `${rv}` === "[object Map]" || 
-  `${rv}` === "[object Set]"
-  ) { 
-   rv = Object.fromEntries(rv);
-  }
 
  var avkeys = Object.keys(av);
  var rvkeys = Object.keys(rv);
@@ -114,12 +116,9 @@ function deep_check_object(obj, keys, should_pop) {
    throw new Error('object must not contain weakmap or weakset');
  }
 
- if(
-  `${obj}` === "[object Map]" || 
-  `${obj}` === "[object Set]"
-  ) { 
-   obj = Object.fromEntries(obj);
-   keys = Object.keys(obj);
+ if(`${obj}` === "[object Map]") { 
+  obj = Object.fromEntries(obj);
+  keys = Object.keys(obj);
  }
 
  keys.forEach((key, index) => {
@@ -127,7 +126,8 @@ function deep_check_object(obj, keys, should_pop) {
   if(
    typeof(obj[key]) === 'object' && 
    Array.isArray(obj[key]) === false && 
-   obj[key] !== null
+   obj[key] !== null && 
+   `${obj[key]}` !== "[object Set]"
   ) {
 
    `${obj[key]}` === "[object Object]" ? key_set.push(`(${key},object)`) : '';
@@ -147,8 +147,13 @@ function deep_check_object(obj, keys, should_pop) {
 
   } else if(
    typeof(obj[key]) === 'object' && 
-   Array.isArray(obj[key]) === true
+   Array.isArray(obj[key]) === true || 
+   `${obj[key]}` === "[object Set]"
   ) {
+
+   if(`${obj[key]}` === "[object Set]") { 
+    obj[key] = Array.from(obj[key]);
+   }
 
    key_set.push(`(${key},array)`);
 
@@ -193,7 +198,8 @@ function deep_check_array(key, arr, should_pop) {
   if(
    typeof(arr[i]) === 'object' && 
    Array.isArray(arr[i]) === false && 
-   arr[i] !== null
+   arr[i] !== null && 
+   `${arr[i]}` !== "[object Set]"
   ) { 
 
    components.push(format_string(
@@ -211,8 +217,13 @@ function deep_check_array(key, arr, should_pop) {
 
   } else if(
    typeof(arr[i]) === 'object' && 
-   Array.isArray(arr[i]) === true
+   Array.isArray(arr[i]) === true ||
+   `${arr[i]}` === "[object Set]"
   ) {
+
+   if(`${arr[i]}` === "[object Set]") { 
+    arr[i] = Array.from(arr[i]);
+   }
 
   components.push(format_string( 
    key_set, 
