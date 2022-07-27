@@ -116,11 +116,6 @@ function deep_check_object(obj, keys, should_pop) {
    throw new Error('object must not contain weakmap or weakset');
  }
 
- if(`${obj}` === "[object Map]") { 
-  obj = Object.fromEntries(obj);
-  keys = Object.keys(obj);
- }
-
  keys.forEach((key, index) => {
 
   if(
@@ -129,6 +124,10 @@ function deep_check_object(obj, keys, should_pop) {
    obj[key] !== null && 
    `${obj[key]}` !== "[object Set]"
   ) {
+
+   if(`${obj[key]}` === "[object Map]") { 
+    obj[key] = Object.fromEntries(obj[key]);
+   }
 
    `${obj[key]}` === "[object Object]" ? key_set.push(`(${key},object)`) : '';
 
@@ -202,6 +201,10 @@ function deep_check_array(key, arr, should_pop) {
    `${arr[i]}` !== "[object Set]"
   ) { 
 
+   if(`${arr[i]}` === "[object Map]") { 
+    arr[i] = Object.fromEntries(arr[i]);
+   }
+
    components.push(format_string(
     key_set, 
     key, 
@@ -258,7 +261,7 @@ function deep_check_array(key, arr, should_pop) {
 } 
 
 function format_string(key_set, key, type, value) { 
-  return `{ path: "[${key_set}]", key: "${key}", type: "${type}", value: "${value}" }`;
+ return `{ path: "[${key_set}]", key: "${key}", type: "${type}", value: "${value}" }`;
 }
 
 module.exports = compare;
