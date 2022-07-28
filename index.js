@@ -9,6 +9,7 @@
 
 var components = [];
 var key_set = [];
+var index_set = [];
 
 function compare(av, rv) { 
 
@@ -72,31 +73,53 @@ function compare(av, rv) {
  var avkeys = Object.keys(av);
  var rvkeys = Object.keys(rv);
 
- if(avkeys.length !== rvkeys.length) { 
-  return false;
- }
-
  const compare_av = deep_check_object(av, avkeys, true); components = []; key_set = [];
  const compare_rv = deep_check_object(rv, rvkeys, true); components = []; key_set = [];
 
- if(compare_av.length !== compare_rv.length) { 
-  return false; 
- }
+ var changes = { 
+  added: [],
+  deleted: [], 
+  changed: [], 
+  same: true
+ };
 
- for(let i = 0; i < compare_av.length; i++) { 
-  var i_found = false;
-  for(let j = 0; j < compare_av.length; j++) { 
-   if(compare_av[i] === compare_rv[j]) { 
-    i_found = true;
+ var a, b;
+
+ for(let i = 0; i < compare_av.length; i++) {
+  var found = false;
+  for(let j = 0; j < compare_rv.length; j++) { 
+   a = JSON.parse(compare_av[i]);
+   b = JSON.parse(compare_rv[j]);
+   if(
+    (`${a.path}` === `${b.path}`) &&
+    (`${a.key}` === `${b.key}`) && 
+    (`${a.index}` === `${b.index}`) && 
+    (`${a.index_set}` === `${b.index_set}`) &&
+    (`${a.currently_inside_of}` === `${b.currently_inside_of}`)
+   ) { 
+    found = true;
+    if(
+     (`${a.type}` !== `${b.type}`) || 
+     (`${a.value}` !== `${b.value}`) 
+    ) { 
+     changes.changed.push({a: compare_av[i], b: compare_rv[j]});
+     changes.same = false;
+    }
+    compare_rv.splice(j, 1);
     break;
    }
   }
-  if(i_found === false) { 
-   return false;
-  }
+  if(found === false) { 
+   changes.deleted.push(compare_av[i]);
+   changes.same = false;
+   }
  }
 
- return true;
+ for(let i = 0; i < compare_rv.length; i++) { 
+  changes.added.push(compare_rv[i]);
+ }
+
+ return changes;
 
 }
 
@@ -126,17 +149,10 @@ function deep_check_object(obj, keys, should_pop) {
     key_set.push(`(${key},object)`);
    }
 
-   components.push(format_string(
-    key_set, 
-    key, 
-    typeof(obj[key]),
-    obj[key]
-   ));
-
    deep_check_object(
     obj[key], 
     Object.keys(obj[key]), 
-    `${obj[key]}` === "[object Object]" ? true : false
+    `${obj[key]}` === "[object Object]" ? true : false,
    );
 
   } else if(
@@ -151,13 +167,6 @@ function deep_check_object(obj, keys, should_pop) {
 
    key_set.push(`(${key},array)`);
 
-   components.push(format_string(
-    key_set, 
-    key, 
-    'array', 
-    obj[key]
-   ));
-
    deep_check_array(
     key, 
     obj[key], 
@@ -168,9 +177,11 @@ function deep_check_object(obj, keys, should_pop) {
 
    components.push(format_string(
     key_set, 
-    key, 
+    key,
     typeof(obj[key]), 
-    typeof(obj[key]) === 'function' ? `${obj[key]}`.replace(/\s+/g, '').toLowerCase() : obj[key]
+    typeof(obj[key]) === 'function' ? `${obj[key]}`.replace(/\s+/g, '').toLowerCase() : obj[key],
+    -1,
+    'object'
    ));
 
   }
@@ -200,14 +211,6 @@ function deep_check_array(key, arr, should_pop) {
     arr[i] = Object.fromEntries(arr[i]);
    }
 
-   components.push(format_string(
-    key_set, 
-    key, 
-    typeof(arr[i]), 
-    arr[i],
-    i
-   ));
-
    deep_check_object(
     arr[i], 
     Object.keys(arr[i]), 
@@ -224,42 +227,39 @@ function deep_check_array(key, arr, should_pop) {
     arr[i] = Array.from(arr[i]);
    }
 
-  components.push(format_string( 
-   key_set, 
-   key, 
-   'array', 
-   arr[i],
-   i
-  ));
+   index_set.push(i);
 
-  deep_check_array(
-   key, 
-   arr[i], 
-   false
-  );
+   deep_check_array(
+    key, 
+    arr[i], 
+    false,
+   );
 
   } else { 
 
    components.push(format_string( 
     key_set, 
-    key, 
+    key,
     typeof(arr[i]), 
     typeof(arr[i]) === 'function' ? `${arr[i]}`.replace(/\s+/g, '').toLowerCase() : arr[i],
-    i
+    i, 
+    'array' 
    ));
 
   }
 
  }
 
+ index_set.pop();
+ 
  if(should_pop === true) { 
   key_set.pop();
  }
 
 } 
 
-function format_string(key_set, key, type, value, index) { 
- return `{ path: "[${key_set}]", key: "${key}", type: "${type}", value: "${value}", index: "${typeof(index) !== 'undefined' ? index : -1}" }`;
+function format_string(key_set, key, type, value, index, v) { 
+ return `{ "path": "[${key_set}]", "key": "${key}", "type": "${type}", "value": "${value}", "index": "${index}", "index_set": "[${index_set}]", "currently_inside_of":"${v}" }`;
 }
 
 module.exports = compare;
