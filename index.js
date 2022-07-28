@@ -115,6 +115,10 @@ function compare(av, rv) {
    }
  }
 
+ if(compare_rv.length > 0) { 
+  changes.same = false;
+ }
+
  for(let i = 0; i < compare_rv.length; i++) { 
   changes.added.push(compare_rv[i]);
  }
