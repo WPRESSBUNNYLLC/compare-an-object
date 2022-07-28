@@ -113,7 +113,7 @@ function compare(av, rv) {
   if(found === false) { 
    changes.deleted.push(compare_av[i]);
    changes.same = false;
-   }
+  }
  }
 
  if(compare_rv.length > 0) { 
@@ -143,7 +143,9 @@ function deep_check_object(obj, keys, should_pop) {
    typeof(obj[key]) === 'object' && 
    Array.isArray(obj[key]) === false && 
    obj[key] !== null && 
-   `${obj[key]}` !== "[object Set]"
+   `${obj[key]}` !== "[object Set]" && 
+   `${obj[key]}` === '[object Object]' || 
+   `${obj[key]}` === '[object Map]' 
   ) {
 
    if(`${obj[key]}` === "[object Map]") { 
@@ -211,12 +213,23 @@ function deep_check_array(key, arr, should_pop) {
    typeof(arr[i]) === 'object' && 
    Array.isArray(arr[i]) === false && 
    arr[i] !== null && 
-   `${arr[i]}` !== "[object Set]"
+   `${arr[i]}` !== "[object Set]" && 
+   `${arr[i]}` === '[object Object]' || 
+   `${arr[i]}` === '[object Map]' 
   ) { 
 
    if(`${arr[i]}` === "[object Map]") { 
     arr[i] = Object.fromEntries(arr[i]);
    }
+
+   components.push(format_string( 
+    key_set, 
+    key,
+    typeof(arr[i]), 
+    arr[i],
+    i, 
+    'array' 
+   ));
 
    deep_check_object(
     arr[i], 
