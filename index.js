@@ -95,8 +95,8 @@ function compare(av, rv) {
     (`${a.path}` === `${b.path}`) &&
     (`${a.key}` === `${b.key}`) && 
     (`${a.index}` === `${b.index}`) &&
-    (`${a.l_deep}` === `${b.l_deep}`) &&
-    (`${a.currently_inside_of}` === `${b.currently_inside_of}`)
+    (`${a.l_deep}` === `${b.l_deep}`) 
+    // (`${a.currently_inside_of}` === `${b.currently_inside_of}`)
    ) { 
     found = true;
     if(
@@ -156,6 +156,15 @@ function deep_check_object(obj, keys, should_pop) {
     key_set.push(`(${key},object)`);
    }
 
+   components.push(format_string( 
+    key_set, 
+    key,
+    typeof(obj[key]), 
+    obj[key],
+    -1, 
+    'object' 
+   ));
+
    deep_check_object(
     obj[key], 
     Object.keys(obj[key]), 
@@ -173,6 +182,15 @@ function deep_check_object(obj, keys, should_pop) {
    }
 
    key_set.push(`(${key},array)`);
+
+   components.push(format_string( 
+    key_set, 
+    key,
+    'array', 
+    obj[key],
+    -1, 
+    'object' 
+   ));
 
    deep_check_array(
     key, 
@@ -218,24 +236,24 @@ function deep_check_array(key, arr, should_pop) {
    `${arr[i]}` === '[object Map]' 
   ) { 
 
-   if(`${arr[i]}` === "[object Map]") { 
-    arr[i] = Object.fromEntries(arr[i]);
-   }
+  if(`${arr[i]}` === "[object Map]") { 
+   arr[i] = Object.fromEntries(arr[i]);
+  }
 
-   components.push(format_string( 
-    key_set, 
-    key,
-    typeof(arr[i]), 
-    arr[i],
-    i, 
-    'array' 
-   ));
+  components.push(format_string( 
+   key_set, 
+   key,
+   typeof(arr[i]), 
+   arr[i],
+   i, 
+   'array' 
+  ));
 
-   deep_check_object(
-    arr[i], 
-    Object.keys(arr[i]), 
-    false
-   );
+  deep_check_object(
+   arr[i], 
+   Object.keys(arr[i]), 
+   false
+  );
 
   } else if(
    typeof(arr[i]) === 'object' && 
@@ -248,6 +266,15 @@ function deep_check_array(key, arr, should_pop) {
    }
 
    index_set.push(i);
+
+   components.push(format_string( 
+    key_set, 
+    key,
+    'array', 
+    arr[i],
+    i, 
+    'array' 
+   ));
 
    deep_check_array(
     key, 

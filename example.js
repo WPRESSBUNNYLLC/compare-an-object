@@ -5,16 +5,22 @@ const compare = require('./index');
 
 var a = { 
     a: 1, 
-    b: [1,2,3,4,5], 
+    b: [1,2,3,4,5,{a: { a: 23, b: 56 }}], 
     c: { 
         a: 44, 
-        b: new Boolean()
+        b: new Boolean(true), 
+        d: { a: 32 }
     }
 }
 
 var b = { 
     a: 1, 
-    b: [1,2,3,4,5]
+    b: [1,2,3,4, {a: { b: 56, a: 12 }}], 
+    c: { 
+        a: 44, 
+        b: new Boolean(true), 
+        d: { a: 32 }
+    }
 }
 
 // var a = [1,2,3,4,5, { a: [1,2,3,4, {b: { a: 1, b: 2}}] }];
