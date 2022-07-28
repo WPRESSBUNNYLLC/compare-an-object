@@ -96,7 +96,6 @@ function compare(av, rv) {
     (`${a.key}` === `${b.key}`) && 
     (`${a.index}` === `${b.index}`) &&
     (`${a.l_deep}` === `${b.l_deep}`) 
-    // (`${a.currently_inside_of}` === `${b.currently_inside_of}`)
    ) { 
     found = true;
     if(

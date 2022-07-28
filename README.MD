@@ -1,6 +1,6 @@
 # compare-an-object
 
-This is a function that can compare two arrays or objects in any order at their deepest level and return the deleted items, changed items, added items and whether they are both equal with high accuracy. (beta)
+This is a function that can compare two arrays or objects in any order at their deepest level and return the deleted items, changed items, added items and whether they are both equal with high accuracy.
 
 ```
 npm i compare-an-object

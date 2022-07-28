@@ -9,17 +9,17 @@ var a = {
     c: { 
         a: 44, 
         b: new Boolean(true), 
-        d: { a: 32 }
+        d: { a: 32, b:98 }
     }
 }
 
 var b = { 
     a: 1, 
-    b: [1,2,3,4, {a: { b: 56, a: 12 }}], 
+    b: [1,2,[2,3,4],3,4,5, {a: { b: 56, a: 23 }}], 
     c: { 
         a: 44, 
         b: new Boolean(true), 
-        d: { a: 32 }
+        d: {  b:98, a: 32 }
     }
 }
 
