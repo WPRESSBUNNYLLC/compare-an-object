@@ -10,6 +10,7 @@
 var components = [];
 var key_set = [];
 var index_set = [];
+var l_deep = 0;
 
 function compare(av, rv) { 
 
@@ -93,8 +94,8 @@ function compare(av, rv) {
    if(
     (`${a.path}` === `${b.path}`) &&
     (`${a.key}` === `${b.key}`) && 
-    (`${a.index}` === `${b.index}`) && 
-    (`${a.index_set}` === `${b.index_set}`) &&
+    (`${a.index}` === `${b.index}`) &&
+    (`${a.l_deep}` === `${b.l_deep}`) &&
     (`${a.currently_inside_of}` === `${b.currently_inside_of}`)
    ) { 
     found = true;
@@ -201,6 +202,8 @@ function deep_check_object(obj, keys, should_pop) {
 }
 
 function deep_check_array(key, arr, should_pop) { 
+
+ l_deep += 1;
  
  for(let i = 0; i < arr.length; i++) { 
 
@@ -255,6 +258,7 @@ function deep_check_array(key, arr, should_pop) {
  }
 
  index_set.pop();
+ l_deep -= 1;
  
  if(should_pop === true) { 
   key_set.pop();
@@ -263,7 +267,7 @@ function deep_check_array(key, arr, should_pop) {
 } 
 
 function format_string(key_set, key, type, value, index, v) { 
- return `{ "path": "[${key_set}]", "key": "${key}", "type": "${type}", "value": "${value}", "index": "${index}", "index_set": "[${index_set}]", "currently_inside_of":"${v}" }`;
+ return `{ "path": "[${key_set}]", "key": "${key}", "type": "${type}", "value": "${value}", "index": "${index}", "index_set": "[${index_set}]", "l_deep": "${l_deep}", "currently_inside_of":"${v}" }`;
 }
 
 module.exports = compare;
