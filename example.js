@@ -16,13 +16,19 @@ var b = {
     b: [1,2,3,4,5,{a: { a: 23, b: 56 }}], 
     c: { 
         a: 44, 
-        b: new Boolean(true), 
+        b: new Boolean(true),
         d: { a: 32, b:98 }
     }
 }
 
+var result;
 
-var result = compare(a,b);
+try {
+ result = compare(a,b);
+} catch(err) { 
+ console.log(err.message)
+}
 
-console.log(result); //either errors message or object of differences
+console.log(result);
+// console.log(result);
 

@@ -22,11 +22,33 @@ console.log(result);
 //result.changed = array of changed values
 //result.deleted = array of deleted values
 //result.same is a boolean showing if they are the same or not
-//...
-//error message
+//result.error is a boolean whether they are the same or not
+//result.error_message is the error message associated with the error
 ```
 
 # Returned Parameters
+
+Object: the object containing the changed, deleted and added values
+<br>
+<br>
+Object.added: the array of added values (JSON string format)
+<br>
+<br>
+Object.deleted: the array of deleted values (JSON string format)
+<br>
+<br>
+Object.changed: the array of changed values (object containing 'a' for base and 'b' for changed) (JSON string format)
+<br>
+<br>
+Object.same: boolean of true or false showing if both objects are the same
+<br>
+<br>
+Object.error: boolean showing if there was an error in execution
+<br>
+<br>
+Object.error_message: the error message if there was an error
+
+# JSON String Params
 
 path: The path you are currently in and their type (array or object)
 <br>
@@ -50,13 +72,7 @@ l_deep: tracks how many levels you are inside of an array
 <br>
 <br>
 currently_inside_of: what you are currently inside of (object or array)
-<br>
-<br>
-the returned 'result.changed' array is an array of objects containing 'a' the base object and 'b' the changed object as JSON string you can print or parse
-<br>
-<br>
-The result.deleted and result.added arrays contain single JSON string which you can print or parse
 
 # Additional
 
-(Does not support WeakSet and WeakMap) Sets are converted to arrays. Maps converted to objects.
+(Does not support WeakSet and WeakMap as enumerable objects (accepts as values)) Sets are converted to arrays. Maps converted to objects.

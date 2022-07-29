@@ -17,18 +17,33 @@ function compare(av, rv) {
  components = [];
  key_set = [];
 
+ var changes = { 
+  added: [],
+  deleted: [], 
+  changed: [], 
+  same: true, 
+  error: false, 
+  error_message: ''
+ };
+
  if(
   typeof(av) !== 'object' || 
   typeof(rv) !== 'object'
  ) { 
-  throw new Error('Input must be of type object');
+  changes.error = true; 
+  changes.error_message = 'Input must be of type object';
+  changes.same = false; 
+  return changes;
  }
 
  if(
   av === null || 
   rv === null
  ) { 
-  throw new Error('Input must not be null');
+  changes.error = true; 
+  changes.error_message = 'Input must not be null';
+  changes.same = false; 
+  return changes;
  }
 
  if(
@@ -37,7 +52,10 @@ function compare(av, rv) {
   `${rv}` === "[object WeakMap]" ||
   `${rv}` === "[object WeakSet]"
  ) { 
-  throw new Error('Input must not be weakmap or weakset');
+  changes.error = true; 
+  changes.error_message = 'Input must not be weakMap or weakSet';
+  changes.same = false;
+  return changes;
  }
 
  if(`${av}` === "[object Map]") { 
@@ -56,7 +74,10 @@ function compare(av, rv) {
   (Array.isArray(av) === true && Array.isArray(rv) === false) || 
   (Array.isArray(av) === false && Array.isArray(rv) === true)
  ) { 
-  throw new Error('Input must be two arrays or two objects');
+  changes.error = true; 
+  changes.error_message = 'Input must be two arrays or two objects';
+  changes.same = false;
+  return changes;
  } 
 
  if(
@@ -76,13 +97,6 @@ function compare(av, rv) {
 
  const compare_av = deep_check_object(av, avkeys, true); components = []; key_set = [];
  const compare_rv = deep_check_object(rv, rvkeys, true); components = []; key_set = [];
-
- var changes = { 
-  added: [],
-  deleted: [], 
-  changed: [], 
-  same: true
- };
 
  var a, b;
 
@@ -128,13 +142,6 @@ function compare(av, rv) {
 }
 
 function deep_check_object(obj, keys, should_pop) { 
-
- if(
-  `${obj}` === "[object WeakMap]" || 
-  `${obj}` === "[object WeakSet]"
- ) { 
-   throw new Error('Object must not be type WeakMap or WeakSet');
- }
 
  keys.forEach((key, index) => {
 
