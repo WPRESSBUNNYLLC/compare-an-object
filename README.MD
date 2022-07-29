@@ -11,7 +11,7 @@ const compare = require("compare-an-object");
 
 var result;
 try {
-  result = compare({ a: 4 }, { a: 4, b: 5 });
+  result = compare({ a: 4 }, { a: 4, b: 5 }); // can take [],[] or {},{}
 } catch (err) {
   result = err.message;
 }
@@ -26,27 +26,36 @@ console.log(result);
 //error message
 ```
 
-# Parameters
+# Returned Parameters
 
-"path": The path you are currently in and their type (array or object)
+path: The path you are currently in and their type (array or object)
 <br>
-"key": The key you are currently pointing to
 <br>
-"type": the type of the value for that key
+key: The key you are currently pointing to
 <br>
-"value": the value at that key
 <br>
-"index": if the value is an array value, the index of the array.. if not an array value, -1
+type: the type of the value for that key
 <br>
-"index_set": [123,[2,3,4,[3,4,5]]], tracks how many levels at each index you are inside of an array - (1,3) for value 5
 <br>
-"l_deep": tracks how many levels you are inside of an array
+value: the value at that key
 <br>
-"currently_inside_of": what you are currently inside of (object or array)
 <br>
-the returned 'changed' array is an object containing 'a' the base object and 'b' the changed object as JSON string you can print or parse
+index: if the value is an array value, the index of the array.. if not an array value, -1
 <br>
-The deleted and added arrays contain single JSON string which you can print or parse
+<br>
+index_set: [123,[2,3,4,[3,4,5]]], tracks how many levels at each index you are inside of an array - (1,3) for value 5
+<br>
+<br>
+l_deep: tracks how many levels you are inside of an array
+<br>
+<br>
+currently_inside_of: what you are currently inside of (object or array)
+<br>
+<br>
+the returned 'result.changed' array is an array of objects containing 'a' the base object and 'b' the changed object as JSON string you can print or parse
+<br>
+<br>
+The result.deleted and result.added arrays contain single JSON string which you can print or parse
 
 # Additional
 
