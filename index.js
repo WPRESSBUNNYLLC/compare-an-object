@@ -2,7 +2,7 @@
  turning deep objects into arrays and comparing.
  recursing on objects and arrays
  pushing path, key, type and value
- for should_pop, making sure I am in an object when popping so I can compare in n^2
+ for should_pop, making sure I am in an object for pushing the key path
  feedback: johneatman446@gmail.com
  please send an email if anything wrong/missing
 */ 
