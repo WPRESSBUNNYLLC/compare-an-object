@@ -29,13 +29,24 @@ console.log(result);
 # Parameters
 
 "path": The path you are currently in and their type (array or object)
+<br>
 "key": The key you are currently pointing to
+<br>
 "type": the type of the value for that key
+<br>
 "value": the value at that key
+<br>
 "index": if the value is an array value, the index of the array.. if not an array value, -1
-"index_set": [123,[2,3,4,[3,4,5]]], tracks how many levels at each index you are inside of an array
+<br>
+"index_set": [123,[2,3,4,[3,4,5]]], tracks how many levels at each index you are inside of an array - (1,3) for value 5
+<br>
 "l_deep": tracks how many levels you are inside of an array
+<br>
 "currently_inside_of": what you are currently inside of (object or array)
+<br>
+the returned 'changed' array is an object containing 'a' the base object and 'b' the changed object as JSON string you can print or parse
+<br>
+The deleted and added arrays contain single JSON string which you can print or parse
 
 # Additional
 
