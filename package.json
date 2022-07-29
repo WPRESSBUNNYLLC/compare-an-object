@@ -1,6 +1,6 @@
 {
   "name": "compare-an-object",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "compares two objects or arrays",
   "main": "index.js",
   "scripts": {

@@ -21,14 +21,14 @@ function compare(av, rv) {
   typeof(av) !== 'object' || 
   typeof(rv) !== 'object'
  ) { 
-  return false;
+  throw new Error('Input must be of type object');
  }
 
  if(
   av === null || 
   rv === null
  ) { 
-  return false;
+  throw new Error('Input must not be null');
  }
 
  if(
@@ -37,7 +37,7 @@ function compare(av, rv) {
   `${rv}` === "[object WeakMap]" ||
   `${rv}` === "[object WeakSet]"
  ) { 
-  throw new Error('input must not be weakmap or weakset');
+  throw new Error('Input must not be weakmap or weakset');
  }
 
  if(`${av}` === "[object Map]") { 
@@ -56,7 +56,7 @@ function compare(av, rv) {
   (Array.isArray(av) === true && Array.isArray(rv) === false) || 
   (Array.isArray(av) === false && Array.isArray(rv) === true)
  ) { 
-  return false;
+  throw new Error('Input must be two arrays or two objects');
  } 
 
  if(
@@ -133,7 +133,7 @@ function deep_check_object(obj, keys, should_pop) {
   `${obj}` === "[object WeakMap]" || 
   `${obj}` === "[object WeakSet]"
  ) { 
-   throw new Error('object must not contain weakmap or weakset');
+   throw new Error('Object must not be type WeakMap or WeakSet');
  }
 
  keys.forEach((key, index) => {

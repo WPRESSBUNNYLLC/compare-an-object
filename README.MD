@@ -7,15 +7,36 @@ npm i compare-an-object
 ```
 
 ```js
-const compare = require("./index");
+const compare = require("compare-an-object");
 
-var result = compare(a, b);
+var result;
+try {
+  result = compare({ a: 4 }, { a: 4, b: 5 });
+} catch (err) {
+  result = err.message;
+}
+
 console.log(result);
 
 //result.added = array of added values
 //result.changed = array of changed values
 //result.deleted = array of deleted values
 //result.same is a boolean showing if they are the same or not
+//...
+//error message
 ```
+
+# Parameters
+
+"path": The path you are currently in and their type (array or object)
+"key": The key you are currently pointing to
+"type": the type of the value for that key
+"value": the value at that key
+"index": if the value is an array value, the index of the array.. if not an array value, -1
+"index_set": [123,[2,3,4,[3,4,5]]], tracks how many levels at each index you are inside of an array
+"l_deep": tracks how many levels you are inside of an array
+"currently_inside_of": what you are currently inside of (object or array)
+
+# Additional
 
 (Does not support WeakSet and WeakMap) Sets are converted to arrays. Maps converted to objects.
