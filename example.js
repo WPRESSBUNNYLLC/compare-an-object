@@ -1,8 +1,9 @@
 const compare = require('./index');
 
 var a = { 
-    a: 1, 
-    b: [1,2,3,4,5,{a: { a: 23, b: 56 }}], 
+    a: 1,
+    v: [{a: { b: [1,2,3,{ a: 6}]}}, {a: 3}], 
+    b: [1,2,3,4,5,{a: { a: 23, b: 55 }}], 
     c: { 
         a: 44, 
         b: new Boolean(true), 
@@ -12,7 +13,8 @@ var a = {
 
 var b = { 
     a: 1, 
-    b: [1,2,3,4,5,{a: { a: 23, b: 56 }}], 
+    v: [{a: { b: [1,2,3,{a: 6}]}}, {a: 3}], 
+    b: [1,2,3,4,5,{a: { a: 23, b: 55 }}], 
     c: { 
         a: 44, 
         b: new Boolean(true),
@@ -30,6 +32,7 @@ try {
 
 
 if (typeof result === "object") {
+    console.log(result);
 //result.added = array of added values
 //result.changed = array of changed values
 //result.deleted = array of deleted values

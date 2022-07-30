@@ -92,6 +92,16 @@ function compare(av, rv) {
   }
  }
 
+ if(
+  `${av}` !== '[object Object]' || 
+  `${rv}` !== `[object Object]`
+  ) { 
+   changes.error = true; 
+   changes.error_message = 'an object ([object Object]) or array are the only values allowed passed into this function';
+   changes.same = false;
+   return changes;
+  }
+
  var avkeys = Object.keys(av);
  var rvkeys = Object.keys(rv);
 
@@ -116,8 +126,10 @@ function compare(av, rv) {
      (`${a.type}` !== `${b.type}`) || 
      (`${a.value}` !== `${b.value}`) 
     ) { 
-     changes.changed.push({a: compare_av[i], b: compare_rv[j]});
-     changes.same = false;
+     changes.changed.push({
+      a: compare_av[i], 
+      b: compare_rv[j]
+     });
     }
     compare_rv.splice(j, 1);
     break;
@@ -125,16 +137,19 @@ function compare(av, rv) {
   }
   if(found === false) { 
    changes.deleted.push(compare_av[i]);
-   changes.same = false;
   }
- }
-
- if(compare_rv.length > 0) { 
-  changes.same = false;
  }
 
  for(let i = 0; i < compare_rv.length; i++) { 
   changes.added.push(compare_rv[i]);
+ }
+
+ if(
+  changes.added.length > 0 || 
+  changes.changed.length > 0 ||
+  changes.deleted.length > 0
+ ) { 
+  changes.same = false;
  }
 
  return changes;
