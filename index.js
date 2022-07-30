@@ -332,7 +332,7 @@ function deep_check_array(key, arr, should_pop) {
 
 } 
 
-function format_string(key_set, key, type, value, index, v) { //it works because im splicing J so it doesnt hit twice.. added a global index for array of objects -1,index of array
+function format_string(key_set, key, type, value, index, v) {
  return `{ "path": "[${key_set}]", "key": "${key}", "type": "${type}", "value": "${value}", "index": "${global_index}", "index_set": "[${index_set}]", "l_deep": "${l_deep}", "currently_inside_of":"${v}" }`;
 }
 

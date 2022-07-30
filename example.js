@@ -3,7 +3,7 @@ const compare = require('./index');
 var a = { 
     a: 1,
     v: [{a: { b: [1,2,3,{ a: 6}]}}, {a: 3}], 
-    b: [1,2,3,4,5,{a: { a: 23, b: 55 }},6,7], 
+    b: [1,2,3,4,5,{a: { a: 23, b: 55 }},6,77], 
     c: { 
         a: 44, 
         b: new Boolean(true), 
