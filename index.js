@@ -11,6 +11,7 @@ var components = [];
 var key_set = [];
 var index_set = [];
 var l_deep = 0;
+var global_index = '';
 
 function compare(av, rv) { 
 
@@ -248,6 +249,8 @@ function deep_check_array(key, arr, should_pop) {
  
  for(let i = 0; i < arr.length; i++) { 
 
+  global_index = i;
+
   if(
    typeof(arr[i]) === 'object' && 
    Array.isArray(arr[i]) === false && 
@@ -318,6 +321,8 @@ function deep_check_array(key, arr, should_pop) {
 
  }
 
+ global_index = '';
+
  index_set.pop();
  l_deep -= 1;
  
@@ -327,8 +332,8 @@ function deep_check_array(key, arr, should_pop) {
 
 } 
 
-function format_string(key_set, key, type, value, index, v) { 
- return `{ "path": "[${key_set}]", "key": "${key}", "type": "${type}", "value": "${value}", "index": "${index}", "index_set": "[${index_set}]", "l_deep": "${l_deep}", "currently_inside_of":"${v}" }`;
+function format_string(key_set, key, type, value, index, v) { //it works because im splicing J so it doesnt hit twice.. added a global index for array of objects -1,index of array
+ return `{ "path": "[${key_set}]", "key": "${key}", "type": "${type}", "value": "${value}", "index": "(${index},${global_index})", "index_set": "[${index_set}]", "l_deep": "${l_deep}", "currently_inside_of":"${v}" }`;
 }
 
 module.exports = compare;

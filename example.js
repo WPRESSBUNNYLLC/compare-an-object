@@ -22,6 +22,9 @@ var b = {
     }
 }
 
+a = [{a:4},{a:8}]
+b = [{a:4},{a:8}]
+
 var result;
 
 try {
