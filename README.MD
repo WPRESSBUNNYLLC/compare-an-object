@@ -65,7 +65,7 @@ type: the type of the value for that key
 value: the value at that key
 <br>
 <br>
-index: if the value is an array value, the index of the array.. if not an array value, -1
+index: if the value is an array value, the index of the array.. if not an array value, (-1,global_index)
 <br>
 <br>
 index_set: [123,[2,3,4,[3,4,5]]], tracks how many levels at each index you are inside of an array - (1,3) for value 5
